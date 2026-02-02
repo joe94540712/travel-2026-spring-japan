@@ -218,6 +218,9 @@
             margin-bottom: 20px;
             position: relative;
             padding-left: 30px;
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
         }
         .timeline-item::before {
             content: '';
@@ -229,11 +232,36 @@
             border-radius: 50%;
             background: var(--c-matcha);
         }
+        .timeline-content {
+            flex: 1;
+        }
         .timeline-time {
             font-weight: bold;
             color: var(--c-brown);
             margin-right: 10px;
             font-size: 0.95rem;
+        }
+        
+        .nav-icon-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            color: var(--c-matcha);
+            border-radius: 50%;
+            transition: background-color 0.2s;
+            margin-left: 10px;
+            flex-shrink: 0;
+            margin-top: -8px; /* Align slightly with text */
+        }
+        .nav-icon-link:active {
+            background-color: rgba(106, 127, 96, 0.1);
+        }
+        .nav-icon-link svg {
+            width: 20px;
+            height: 20px;
+            stroke-width: 2px;
         }
 
         /* Intro Text */
@@ -280,7 +308,10 @@
     <main class="container">
         <!-- View: Itinerary -->
         <div id="view-itinerary" class="view">
-            <h1 class="title-kanji">行程安排</h1>
+            <h1 class="title-kanji">
+                <span style="display:block; font-size:0.55em; font-weight:500; color:var(--c-matcha); letter-spacing:0.15em; margin-bottom:4px; font-family:var(--font-main);">2026 春節 九州遊</span>
+                行程安排
+            </h1>
             <p class="intro-text">二月的九州，是一首溫柔而層次豐富的冬日序曲。</p>
             <div id="itinerary-list"></div>
         </div>
@@ -429,9 +460,11 @@
                     <div style="border-left: 2px solid var(--c-paper-dark); margin-left:5px; padding-left:0;">
                         ${day.items.map(item => `
                             <div class="timeline-item">
-                                <span class="timeline-time">${item.time}</span>
-                                <span>${item.text}</span>
-                                ${item.map ? `<a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.map)}" target="_blank" class="btn-map" style="margin-top:10px; padding:6px 15px; font-size:0.85rem; width:auto; display:inline-flex;">${mapIcon} 導航</a>` : ''}
+                                <div class="timeline-content">
+                                    <span class="timeline-time">${item.time}</span>
+                                    <span>${item.text}</span>
+                                </div>
+                                ${item.map ? `<a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.map)}" target="_blank" class="nav-icon-link" aria-label="導航至 ${item.text}">${mapIcon}</a>` : ''}
                             </div>
                         `).join('')}
                     </div>
