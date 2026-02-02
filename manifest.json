@@ -1,0 +1,16 @@
+{
+  "name": "九州心動之旅 2026",
+  "short_name": "九州 2026",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#F2EFE9",
+  "theme_color": "#3E3832",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'><rect width='180' height='180' fill='%23F2EFE9'/><g transform='translate(40, 40) scale(1)'><circle cx='50' cy='25' r='20' fill='%23CD4E3D'/><circle cx='74' cy='42' r='20' fill='%23CD4E3D'/><circle cx='65' cy='71' r='20' fill='%23CD4E3D'/><circle cx='35' cy='71' r='20' fill='%23CD4E3D'/><circle cx='26' cy='42' r='20' fill='%23CD4E3D'/><circle cx='50' cy='50' r='12' fill='%23BFA456'/></g></svg>",
+      "sizes": "180x180",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
