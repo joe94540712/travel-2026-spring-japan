@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>九州心動之旅 2026</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@300;500;700&family=Shippori+Mincho:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Palette: Kyushu Earth & Paper */
+            --c-paper: #F2EFE9;
+            --c-paper-dark: #E6E2D8;
+            --c-ink: #3E3832;
+            --c-ink-light: #6B6259;
+            --c-brown: #5D4037;
+            --c-matcha: #6A7F60;
+            --c-vermilion: #CD4E3D;
+            --c-gold: #BFA456;
+            
+            --font-main: 'Shippori Mincho', 'Noto Serif TC', serif;
+            
+            --s-radius: 12px;
+            --s-shadow: 0 8px 30px rgba(62, 56, 50, 0.1);
+            --s-nav-height: 75px;
+        }
+
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--c-paper);
+            color: var(--c-ink);
+            font-family: var(--font-main);
+            margin: 0;
+            padding: 0;
+            padding-bottom: calc(var(--s-nav-height) + 30px);
+            line-height: 1.7;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.08'/%3E%3C/svg%3E");
+        }
+
+        /* Utility */
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .hidden { display: none !important; }
+        
+        h1, h2, h3, p { margin: 0; }
+
+        /* Typography */
+        .title-kanji {
+            font-family: 'Shippori Mincho', serif;
+            font-weight: 700;
+            font-size: 1.6rem;
+            letter-spacing: 0.15em;
+            color: var(--c-ink);
+            margin-bottom: 0.5rem;
+            text-align: center;
+            border-bottom: 2px solid var(--c-matcha);
+            padding-bottom: 20px;
+            margin-top: 25px;
+            position: relative;
+        }
+
+        .section-header {
+            font-size: 1.2rem;
+            color: var(--c-matcha);
+            font-weight: 700;
+            margin: 35px 0 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        /* Cards */
+        .card {
+            background: white;
+            border-radius: var(--s-radius);
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: var(--s-shadow);
+            border: 1px solid rgba(0,0,0,0.02);
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .card:active {
+            transform: scale(0.97);
+        }
+
+        .tag {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            margin-right: 8px;
+            background: var(--c-paper-dark);
+            color: var(--c-ink-light);
+            letter-spacing: 0.05em;
+        }
+        .tag.reserved {
+            background: var(--c-vermilion);
+            color: white;
+        }
+
+        /* Weather Widget */
+        .weather-badge {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            text-align: right;
+        }
+        .weather-icon {
+            font-size: 1.8rem;
+            line-height: 1;
+            margin-bottom: 4px;
+        }
+        .weather-temp {
+            font-size: 0.85rem;
+            font-weight: bold;
+            color: var(--c-ink);
+        }
+        .weather-loc {
+            font-size: 0.7rem;
+            color: var(--c-ink-light);
+            opacity: 0.8;
+        }
+
+        /* Buttons */
+        .btn-map {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 15px;
+            padding: 10px 20px;
+            background-color: var(--c-matcha);
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            width: 100%;
+            transition: all 0.2s;
+            font-weight: 500;
+        }
+        .btn-map:hover {
+            filter: brightness(0.9);
+        }
+        .btn-map svg {
+            width: 18px;
+            height: 18px;
+            margin-right: 8px;
+        }
+
+        /* Navigation */
+        .nav-bar {
+            position: fixed;
+            bottom: 25px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: calc(100% - 40px);
+            max-width: 500px;
+            height: 70px;
+            background: rgba(62, 56, 50, 0.96);
+            backdrop-filter: blur(15px);
+            border-radius: 35px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+            z-index: 1000;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: rgba(255,255,255,0.4);
+            font-size: 0.75rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+        .nav-item.active {
+            color: #E6E2D8;
+        }
+        .nav-item svg {
+            width: 26px;
+            height: 26px;
+            margin-bottom: 4px;
+        }
+
+        /* Flights */
+        .flight-card {
+            border-top: 6px solid var(--c-vermilion);
+        }
+        .flight-number {
+            font-family: 'Courier New', monospace;
+            font-size: 1.1rem;
+            font-weight: bold;
+            background: var(--c-paper);
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+
+        /* Timeline */
+        .timeline-item {
+            margin-bottom: 20px;
+            position: relative;
+            padding-left: 30px;
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: 5px;
+            top: 8px;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--c-matcha);
+        }
+        .timeline-time {
+            font-weight: bold;
+            color: var(--c-brown);
+            margin-right: 10px;
+            font-size: 0.95rem;
+        }
+
+        /* Intro Text */
+        .intro-text {
+            font-size: 0.95rem;
+            color: var(--c-ink-light);
+            text-align: center;
+            margin: 20px 0 30px;
+            padding: 0 10px;
+            font-style: italic;
+        }
+
+        /* Loader */
+        #loader {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: var(--c-paper);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+        }
+        .mon-stamps {
+            font-family: serif;
+            font-size: 2rem;
+            color: var(--c-vermilion);
+            border: 4px solid var(--c-vermilion);
+            padding: 10px 20px;
+            transform: rotate(-5deg);
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div id="loader">
+        <div class="mon-stamps">九州</div>
+        <div style="letter-spacing: 0.3em; color: var(--c-ink-light)">心動之旅 2026</div>
+    </div>
+
+    <main class="container">
+        <!-- View: Itinerary -->
+        <div id="view-itinerary" class="view">
+            <h1 class="title-kanji">行程安排</h1>
+            <p class="intro-text">二月的九州，是一首溫柔而層次豐富的冬日序曲。</p>
+            <div id="itinerary-list"></div>
+        </div>
+
+        <!-- View: Food -->
+        <div id="view-food" class="view hidden">
+            <h1 class="title-kanji">美食資訊</h1>
+            <p class="intro-text">季節限定的美食探索，肥美牡蠣與博多靈魂美食。</p>
+            <div id="food-list"></div>
+        </div>
+
+        <!-- View: Stay -->
+        <div id="view-stay" class="view hidden">
+            <h1 class="title-kanji">住宿資訊</h1>
+            <p class="intro-text">精選舒適與便利兼具的下榻之所。</p>
+            <div id="stay-list"></div>
+        </div>
+
+        <!-- View: Flights -->
+        <div id="view-flights" class="view hidden">
+            <h1 class="title-kanji">航班資訊</h1>
+            <p class="intro-text">星宇航空，優雅開啟與結束您的旅程。</p>
+            <div id="flight-list"></div>
+        </div>
+    </main>
+
+    <nav class="nav-bar">
+        <button class="nav-item active" onclick="switchTab('itinerary')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            <span>行程</span>
+        </button>
+        <button class="nav-item" onclick="switchTab('food')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
+            <span>美食</span>
+        </button>
+        <button class="nav-item" onclick="switchTab('stay')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M5 21V7l8-4 8 4v14M9 10a2 2 0 1 0 0 4"/></svg>
+            <span>住宿</span>
+        </button>
+        <button class="nav-item" onclick="switchTab('flights')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L2 22"/><path d="M2 11h9"/><path d="M11 2v9"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+            <span>航班</span>
+        </button>
+    </nav>
+
+    <script>
+        const data = {
+            flights: [
+                { type: "去程 JX840", date: "2/19 (四)", time: "14:45 - 18:00", flight: "JX840", route: "TPE ➝ FUK", note: "台北桃園 第一航廈" },
+                { type: "回程 JX841", date: "2/23 (一)", time: "19:10 - 20:50", flight: "JX841", route: "FUK ➝ TPE", note: "福岡國際 國際航廈" }
+            ],
+            stay: [
+                { city: "福岡 Fukuoka", hotel: "三井花園飯店 福岡祇園 (Day 1)", area: "博多站周邊", note: "地理位置優越，設有大浴場", map: "三井花園飯店 福岡祇園" },
+                { city: "熊本 Kumamoto", hotel: "熊本OMO5 by 星野集團 (Day 2)", area: "熊本市中心", note: "都市觀光新形態，鄰近熊本城", map: "OMO5 熊本 by 星野集團" },
+                { city: "福岡 Fukuoka", hotel: "Hilton福岡海鷹 (Day 3~4)", area: "百道濱", note: "全室海景，度假風情與大型飯店服務", map: "Hilton Fukuoka Sea Hawk" }
+            ],
+            food: [
+                { name: "元祖牛腸鍋樂天地", type: "博多晚餐", note: "2/19 21:15 已預約，暖冬靈魂料理", reserved: true, map: "元祖牛腸鍋 樂天地 博多站前店" },
+                { name: "燒肉上", type: "天神晚餐", note: "2/22 20:30 已預約，精選高品質燒肉", reserved: true, map: "Yakiniku Jo 2-2-8 Watanabe-dori" },
+                { name: "糸島牡蠣小屋", type: "季節限定", note: "冬季限定肥美牡蠣，岐志漁港直送", map: "岐志漁港 牡蠣小屋" },
+                { name: "柳川蒸籠鰻魚飯", type: "水鄉名物", note: "本吉屋/若松屋，軟糯香甜", map: "元祖本吉屋 本店 柳川" },
+                { name: "大地的烏龍麵", type: "福岡日常", note: "必點牛蒡天婦羅烏龍麵", map: "大地のうどん 博多駅ちかてん" },
+                { name: "勝烈亭", type: "熊本名店", note: "黑豚炸豬排，外酥內嫩", map: "勝烈亭 新市街本店" }
+            ],
+            itinerary: [
+                {
+                    day: "Day 1 (2/19 四)",
+                    title: "抵達福岡．味蕾序曲",
+                    weather: { icon: "☁️", temp: "6°C", desc: "多雲" },
+                    loc: "博多",
+                    items: [
+                        { time: "18:00", text: "抵達福岡機場 (JX840)", map: "福岡機場國際線航廈" },
+                        { time: "19:00", text: "辦理入境與機場取車", map: "福岡機場國際線航廈" },
+                        { time: "20:30", text: "三井花園飯店 福岡祇園 Check-in", map: "三井花園飯店 福岡祇園" },
+                        { time: "21:15", text: "晚餐：樂天地牛腸鍋 (已預約)", map: "元祖牛腸鍋 樂天地 博多站前店" }
+                    ]
+                },
+                {
+                    day: "Day 2 (2/20 五)",
+                    title: "筑後巡禮．茶鄉風光",
+                    weather: { icon: "☀️", temp: "8°C", desc: "晴朗" },
+                    loc: "浮羽/八女",
+                    items: [
+                        { time: "10:40", text: "浮羽稻荷神社 (朱紅千本鳥居)", map: "浮羽稲荷神社" },
+                        { time: "12:00", text: "浮羽白壁街道午餐 & 散策", map: "吉井白壁街道" },
+                        { time: "14:00", text: "八女中央大茶園展望所", map: "八女中央大茶園 展望所" },
+                        { time: "15:30", text: "八女茶之文化館 (抹茶體驗)", map: "茶之文化館 星野村" },
+                        { time: "18:30", text: "熊本OMO5 飯店 Check-in", map: "OMO5 熊本 by 星野集團" },
+                        { time: "19:30", text: "晚餐：勝烈亭炸豬排", map: "勝烈亭 新市街本店" }
+                    ]
+                },
+                {
+                    day: "Day 3 (2/21 六)",
+                    title: "古城水鄉．今昔漫遊",
+                    weather: { icon: "⛅", temp: "9°C", desc: "晴時多雲" },
+                    loc: "熊本/柳川",
+                    items: [
+                        { time: "09:00", text: "熊本城 (特別見學通路)", map: "熊本城 二の丸駐車場" },
+                        { time: "11:00", text: "櫻之馬場 城彩苑", map: "櫻之馬場 城彩苑" },
+                        { time: "13:30", text: "午餐：柳川蒸籠鰻魚飯", map: "元祖本吉屋 本店" },
+                        { time: "15:00", text: "柳川遊船 (冬季暖桌船)", map: "柳川泛舟" },
+                        { time: "19:00", text: "晚餐：中洲屋台體驗", map: "中洲屋台街" }
+                    ]
+                },
+                {
+                    day: "Day 4 (2/22 日)",
+                    title: "梅香海韻．季節獻禮",
+                    weather: { icon: "🌸", temp: "7°C", desc: "梅花季" },
+                    loc: "太宰府/糸島",
+                    items: [
+                        { time: "09:00", text: "太宰府天滿宮 (飛梅/星巴克)", map: "太宰府天滿宮" },
+                        { time: "12:30", text: "午餐：糸島岐志漁港牡蠣小屋", map: "岐志漁港" },
+                        { time: "14:30", text: "糸島海岸線 (櫻井二見浦)", map: "櫻井二見浦 夫婦岩" },
+                        { time: "18:00", text: "天神商圈購物採買", map: "天神地下街" },
+                        { time: "20:30", text: "晚餐：燒肉上 (已預約)", map: "2-2-8 Watanabe-dori, Fukuoka" }
+                    ]
+                },
+                {
+                    day: "Day 5 (2/23 一)",
+                    title: "都會漫遊．滿載而歸",
+                    weather: { icon: "✈️", temp: "10°C", desc: "晴天" },
+                    loc: "福岡市區",
+                    items: [
+                        { time: "10:00", text: "大濠公園散策 或 寶可夢中心", map: "大濠公園" },
+                        { time: "12:00", text: "午餐：大地的烏龍麵", map: "大地のうどん 博多駅下店" },
+                        { time: "13:30", text: "Lalaport 福岡 鋼彈立像", map: "LaLaport福岡" },
+                        { time: "16:30", text: "還車並抵達機場 (JX841)", map: "福岡機場國際線航廈" }
+                    ]
+                }
+            ]
+        };
+
+        const mapIcon = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>`;
+
+        function renderItinerary() {
+            const list = document.getElementById('itinerary-list');
+            list.innerHTML = data.itinerary.map(day => `
+                <div class="card">
+                    <div class="weather-badge">
+                        <div class="weather-icon">${day.weather.icon}</div>
+                        <div class="weather-temp">${day.weather.temp} ${day.weather.desc}</div>
+                        <div class="weather-loc">${day.loc}</div>
+                    </div>
+                    <div style="color:var(--c-vermilion); font-weight:bold; font-size:0.8rem; margin-bottom:4px;">${day.day}</div>
+                    <h3 style="font-size:1.3rem; margin-bottom:20px; padding-right:70px;">${day.title}</h3>
+                    <div style="border-left: 2px solid var(--c-paper-dark); margin-left:5px; padding-left:0;">
+                        ${day.items.map(item => `
+                            <div class="timeline-item">
+                                <span class="timeline-time">${item.time}</span>
+                                <span>${item.text}</span>
+                                ${item.map ? `<a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.map)}" target="_blank" class="btn-map" style="margin-top:10px; padding:6px 15px; font-size:0.85rem; width:auto; display:inline-flex;">${mapIcon} 導航</a>` : ''}
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderFood() {
+            const list = document.getElementById('food-list');
+            list.innerHTML = data.food.map(item => `
+                <div class="card" style="${item.reserved ? 'border-left: 5px solid var(--c-vermilion)' : ''}">
+                    <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                        <div>
+                            <span class="tag ${item.reserved ? 'reserved' : ''}">${item.type}</span>
+                            <h3 style="font-size:1.2rem; margin:8px 0;">${item.name}</h3>
+                            <p style="font-size:0.9rem; color:var(--c-ink-light);">${item.note}</p>
+                        </div>
+                    </div>
+                    <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.map)}" target="_blank" class="btn-map">${mapIcon} 查看地點</a>
+                </div>
+            `).join('');
+        }
+
+        function renderStay() {
+            const list = document.getElementById('stay-list');
+            list.innerHTML = data.stay.map(item => `
+                <div class="card">
+                    <div style="color:var(--c-matcha); font-weight:bold; font-size:0.8rem; margin-bottom:5px;">${item.city}</div>
+                    <h3 style="font-size:1.2rem; margin-bottom:8px;">${item.hotel}</h3>
+                    <p style="font-size:0.9rem; color:var(--c-ink-light); margin-bottom:5px;">${item.area}</p>
+                    <p style="font-size:0.85rem; color:var(--c-ink-light); font-style:italic;">"${item.note}"</p>
+                    <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.map)}" target="_blank" class="btn-map">${mapIcon} 開啟地圖</a>
+                </div>
+            `).join('');
+        }
+
+        function renderFlights() {
+            const list = document.getElementById('flight-list');
+            list.innerHTML = data.flights.map(item => `
+                <div class="card flight-card">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+                        <span class="tag">${item.type}</span>
+                        <span class="flight-number">${item.flight}</span>
+                    </div>
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin:20px 0;">
+                        <div style="text-align:center;">
+                            <div style="font-size:0.8rem; color:var(--c-ink-light);">ORIGIN</div>
+                            <div style="font-size:1.5rem; font-weight:bold;">${item.route.split('➝')[0].trim()}</div>
+                        </div>
+                        <div style="color:var(--c-gold); font-size:2rem; transform: rotate(45deg); display: flex; align-items: center;">✈</div>
+                        <div style="text-align:center;">
+                            <div style="font-size:0.8rem; color:var(--c-ink-light);">DEST.</div>
+                            <div style="font-size:1.5rem; font-weight:bold;">${item.route.split('➝')[1].trim()}</div>
+                        </div>
+                    </div>
+                    <div style="border-top:1px dashed var(--c-paper-dark); padding-top:15px; display:flex; justify-content:space-between;">
+                        <div>
+                            <div style="font-size:0.7rem; color:var(--c-ink-light);">DATE</div>
+                            <div style="font-weight:bold;">${item.date}</div>
+                        </div>
+                        <div style="text-align:right;">
+                            <div style="font-size:0.7rem; color:var(--c-ink-light);">TIME</div>
+                            <div style="font-weight:bold; color:var(--c-vermilion);">${item.time}</div>
+                        </div>
+                    </div>
+                    <div style="margin-top:10px; font-size:0.8rem; color:var(--c-ink-light); text-align:center;">${item.note}</div>
+                </div>
+            `).join('');
+        }
+
+        function switchTab(tabId) {
+            document.querySelectorAll('.view').forEach(v => v.classList.add('hidden'));
+            document.getElementById(`view-${tabId}`).classList.remove('hidden');
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            const idx = {itinerary:0, food:1, stay:2, flights:3}[tabId];
+            document.querySelectorAll('.nav-item')[idx].classList.add('active');
+            window.scrollTo(0,0);
+        }
+
+        window.onload = () => {
+            renderItinerary();
+            renderFood();
+            renderStay();
+            renderFlights();
+            setTimeout(() => {
+                document.getElementById('loader').style.display = 'none';
+            }, 1000);
+        };
+    </script>
+</body>
+</html>
