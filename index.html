@@ -108,23 +108,46 @@
 
         /* Tags */
         .tag {
-            display: inline-block;
-            padding: 3px 10px;
+            display: inline-flex; /* Align emoji and text */
+            align-items: center;
+            padding: 3px 8px;
             border-radius: 4px;
             font-size: 0.75rem;
             font-weight: 500;
             margin-right: 6px;
             margin-bottom: 4px;
-            letter-spacing: 0.05em;
+            letter-spacing: 0.02em;
             color: white;
+            line-height: 1.3;
         }
-        /* Tag Colors (Nippon Colors inspired) */
-        .tag.reserved { background-color: var(--c-vermilion); } /* Reservation */
-        .tag.dinner { background-color: #4D5D75; } /* Kachi-iro (Dark Blue) - Dinner/Lunch */
-        .tag.sweets { background-color: #EFA736; } /* Yamabuki (Golden Yellow) - Sweets */
-        .tag.bakery { background-color: #D98C6F; } /* Cinnamon - Bakery */
-        .tag.snack { background-color: var(--c-matcha); } /* Matcha - Snack/Takeout */
-        .tag.izakaya { background-color: #5D4037; } /* Kogecha (Dark Brown) - Izakaya/Meat */
+        /* Tag Colors & Styles */
+        .tag.reserved { background-color: var(--c-vermilion); }
+        .tag.nabe { background-color: #D98C6F; }      /* Pot/Hotpot */
+        .tag.yakiniku { background-color: #5D4037; }  /* BBQ/Meat */
+        .tag.set { background-color: #4D5D75; }       /* Set Meal/Rice */
+        .tag.izakaya { background-color: #6B6259; }   /* Izakaya */
+        .tag.sweets { background-color: #EFA736; }    /* Sweets */
+        .tag.bakery { background-color: #D4A373; }    /* Bakery */
+        .tag.snack { background-color: var(--c-matcha); } /* Snack */
+        .tag.ramen { background-color: #9CAF88; }     /* Noodles */
+
+        /* Area Section Header */
+        .area-header {
+            font-family: var(--font-main);
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--c-matcha);
+            margin: 25px 0 15px;
+            padding-bottom: 5px;
+            border-bottom: 1px dashed var(--c-matcha);
+            display: flex;
+            align-items: center;
+        }
+        .area-header::before {
+            content: '📍';
+            margin-right: 6px;
+            font-size: 1.1rem;
+        }
 
         /* Weather Widget */
         .weather-badge {
@@ -385,26 +408,28 @@
                 { city: "福岡 Fukuoka", hotel: "Hilton福岡海鷹 (Day 3~4)", area: "百道濱", note: "全室海景，度假風情與大型飯店服務", map: "Hilton Fukuoka Sea Hawk" }
             ],
             food: [
-                // 預約 / 重點
-                { name: "元祖牛腸鍋樂天地", type: "博多晚餐", note: "2/19 21:15 已預約，暖冬靈魂料理", reserved: true, tags: ["reserved", "dinner"], map: "元祖牛腸鍋 樂天地 博多站前店" },
-                { name: "燒肉上", type: "天神晚餐", note: "2/22 20:30 已預約，精選高品質燒肉", reserved: true, tags: ["reserved", "izakaya"], map: "Yakiniku Jo 2-2-8 Watanabe-dori" },
+                // 已預約 (Reserved) - 優先顯示
+                { name: "元祖牛腸鍋樂天地", type: "博多", region: "Hakata", note: "2/19 21:15 已預約，暖冬靈魂料理", reserved: true, tags: ["reserved", "nabe"], map: "元祖牛腸鍋 樂天地 博多站前店" },
+                { name: "燒肉上", type: "天神", region: "Tenjin", note: "2/22 20:30 已預約，精選高品質燒肉", reserved: true, tags: ["reserved", "yakiniku"], map: "Yakiniku Jo 2-2-8 Watanabe-dori" },
                 
-                // 正餐 / 鹹食
-                { name: "博多水炊鍋専門 橙", type: "博多", note: "米其林推薦，濃郁雞湯鍋", tags: ["dinner"], map: "博多水炊鍋専門 橙" },
-                { name: "元祖博多めんたい重", type: "西中洲", note: "明太子蓋飯名店，建議早起排隊", tags: ["dinner"], map: "元祖博多めんたい重" },
-                { name: "博多シーフードうお田", type: "博多", note: "豪華海鮮丼，明太子食べ放題", tags: ["dinner"], map: "博多シーフードうお田" },
-                { name: "柳川蒸籠鰻魚飯", type: "柳川", note: "本吉屋/若松屋，軟糯香甜", tags: ["dinner"], map: "元祖本吉屋 本店 柳川" },
-                { name: "勝烈亭", type: "熊本", note: "黑豚炸豬排，外酥內嫩", tags: ["dinner"], map: "勝烈亭 新市街本店" },
-                { name: "大地的烏龍麵", type: "博多", note: "巨大牛蒡天婦羅，博多必吃", tags: ["dinner"], map: "大地のうどん 博多駅ちかてん" },
-                { name: "雞皮長政 (かわ屋)", type: "博多", note: "博多名物雞皮串，適合作為宵夜", tags: ["izakaya"], map: "雞皮長政 博多" },
+                // 博多 (Hakata)
+                { name: "博多水炊鍋専門 橙", type: "博多", region: "Hakata", note: "米其林推薦，濃郁雞湯鍋", tags: ["nabe"], map: "博多水炊鍋専門 橙" },
+                { name: "博多シーフードうお田", type: "博多", region: "Hakata", note: "豪華海鮮丼，明太子食べ放題", tags: ["set"], map: "博多シーフードうお田" },
+                { name: "大地的烏龍麵", type: "博多", region: "Hakata", note: "巨大牛蒡天婦羅，博多必吃", tags: ["ramen"], map: "大地のうどん 博多駅ちかてん" },
+                { name: "雞皮長政 (かわ屋)", type: "博多", region: "Hakata", note: "博多名物雞皮串，宵夜首選", tags: ["izakaya"], map: "雞皮長政 博多" },
+                { name: "LeClerc", type: "博多", region: "Hakata", note: "法式甜點，精緻蛋糕", tags: ["sweets"], map: "LeClerc Hakata" },
+                { name: "努努雞", type: "博多站", region: "Hakata", note: "冷炸雞，最佳下酒菜與伴手禮", tags: ["snack"], map: "努努雞 博多マイング店" },
 
-                // 甜點 / 麵包 / 伴手禮
-                { name: "I'm donut? 福岡", type: "天神", note: "生甜甜圈排隊名店，口感濕潤", tags: ["sweets"], map: "I'm donut? 福岡" },
-                { name: "鈴懸 博多本店", type: "中洲川端", note: "精緻和菓子，草莓大福與鈴乃最中", tags: ["sweets"], map: "鈴懸 博多本店" },
-                { name: "LeClerc", type: "博多", note: "法式甜點，精緻蛋糕", tags: ["sweets"], map: "LeClerc Hakata" },
-                { name: "Bouquca Bakery", type: "福岡", note: "人氣麵包店，口感紮實", tags: ["bakery"], map: "Bouquca Bakery Fukuoka" },
-                { name: "努努雞", type: "博多站", note: "冷炸雞，最佳下酒菜與伴手禮", tags: ["snack"], map: "努努雞 博多マイング店" },
-                { name: "糸島牡蠣小屋", type: "糸島", note: "冬季限定肥美牡蠣", tags: ["snack"], map: "岐志漁港 牡蠣小屋" }
+                // 天神/中洲 (Tenjin/Nakasu)
+                { name: "元祖博多めんたい重", type: "西中洲", region: "Tenjin", note: "明太子蓋飯名店，建議早起排隊", tags: ["set"], map: "元祖博多めんたい重" },
+                { name: "I'm donut? 福岡", type: "天神", region: "Tenjin", note: "生甜甜圈排隊名店，口感濕潤", tags: ["sweets"], map: "I'm donut? 福岡" },
+                { name: "鈴懸 博多本店", type: "中洲", region: "Tenjin", note: "精緻和菓子，草莓大福", tags: ["sweets"], map: "鈴懸 博多本店" },
+                { name: "Bouquca Bakery", type: "福岡", region: "Tenjin", note: "人氣麵包店，口感紮實", tags: ["bakery"], map: "Bouquca Bakery Fukuoka" },
+
+                // 其他地區 (Other)
+                { name: "柳川蒸籠鰻魚飯", type: "柳川", region: "Other", note: "本吉屋/若松屋，軟糯香甜", tags: ["set"], map: "元祖本吉屋 本店 柳川" },
+                { name: "勝烈亭", type: "熊本", region: "Other", note: "黑豚炸豬排，外酥內嫩", tags: ["set"], map: "勝烈亭 新市街本店" },
+                { name: "糸島牡蠣小屋", type: "糸島", region: "Other", note: "冬季限定肥美牡蠣", tags: ["snack"], map: "岐志漁港 牡蠣小屋" }
             ],
             itinerary: [
                 {
@@ -504,23 +529,27 @@
 
         function renderFood() {
             const list = document.getElementById('food-list');
-            // Sort reserved first
-            const sortedFood = [...data.food].sort((a, b) => (b.reserved ? 1 : 0) - (a.reserved ? 1 : 0));
-            
-            list.innerHTML = sortedFood.map(item => `
+            list.innerHTML = ''; // Clear current content
+
+            // Helper to generate Card HTML
+            const createCard = (item) => `
                 <div class="card" style="${item.reserved ? 'border-left: 5px solid var(--c-vermilion)' : ''}">
                     <div style="display:flex; justify-content:space-between; align-items:flex-start;">
                         <div>
                             <div style="margin-bottom:6px;">
                                 ${item.tags ? item.tags.map(t => {
-                                    let label = t.toUpperCase();
-                                    if(t==='reserved') label = '已預約';
-                                    if(t==='dinner') label = '正餐';
-                                    if(t==='sweets') label = '甜點';
-                                    if(t==='bakery') label = '麵包';
-                                    if(t==='snack') label = '小吃/伴手禮';
-                                    if(t==='izakaya') label = '居酒屋/燒肉';
-                                    return `<span class="tag ${t}">${label}</span>`;
+                                    let label = t;
+                                    let icon = '';
+                                    if(t==='reserved') { label = '已預約'; icon='🔴'; }
+                                    else if(t==='nabe') { label = '鍋物'; icon='🍲'; }
+                                    else if(t==='yakiniku') { label = '燒肉'; icon='🥩'; }
+                                    else if(t==='set') { label = '定食'; icon='🍱'; }
+                                    else if(t==='izakaya') { label = '居酒屋'; icon='🍢'; }
+                                    else if(t==='sweets') { label = '甜點'; icon='🍡'; }
+                                    else if(t==='bakery') { label = '麵包'; icon='🥯'; }
+                                    else if(t==='snack') { label = '小吃'; icon='🍗'; }
+                                    else if(t==='ramen') { label = '麵類'; icon='🍜'; }
+                                    return `<span class="tag ${t}">${icon} ${label}</span>`;
                                 }).join('') : ''}
                             </div>
                             <h3 style="font-size:1.2rem; margin:4px 0 8px;">${item.name}</h3>
@@ -529,7 +558,40 @@
                     </div>
                     <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(item.map)}" target="_blank" class="btn-map">${mapIcon} 查看地點</a>
                 </div>
-            `).join('');
+            `;
+
+            // 1. Reserved Items (Top Priority)
+            const reservedItems = data.food.filter(i => i.reserved);
+            if (reservedItems.length > 0) {
+                const reservedSection = document.createElement('div');
+                reservedSection.innerHTML = `<div class="area-header" style="color:var(--c-vermilion); border-color:var(--c-vermilion);">📅 預約行程</div>` + 
+                                            reservedItems.map(createCard).join('');
+                list.appendChild(reservedSection);
+            }
+
+            // 2. Group by Region (Excluding reserved ones to avoid duplicates? Or keep them? User said "Top", let's separate them completely)
+            // Strategy: Show Reserved ONCE at top. Then show others grouped by region.
+            // If a reserved item is also in region list, it might be redundant. 
+            // Better to show ALL items in region list, but Reserved ones are ALSO highlighted at top?
+            // "預約的項目仍然需要置頂標示" usually means "Group them at top".
+            // Let's filter out reserved items from the region groups to avoid duplicate display.
+            const otherItems = data.food.filter(i => !i.reserved);
+
+            const regions = {
+                'Hakata': '博多車站周邊',
+                'Tenjin': '天神・中洲',
+                'Other': '熊本・柳川・糸島'
+            };
+
+            for (const [key, label] of Object.entries(regions)) {
+                const regionItems = otherItems.filter(i => i.region === key);
+                if (regionItems.length > 0) {
+                    const section = document.createElement('div');
+                    section.innerHTML = `<div class="area-header">${label}</div>` + 
+                                        regionItems.map(createCard).join('');
+                    list.appendChild(section);
+                }
+            }
         }
 
         function renderStay() {
