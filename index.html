@@ -106,21 +106,25 @@
             transform: scale(0.97);
         }
 
+        /* Tags */
         .tag {
             display: inline-block;
-            padding: 4px 12px;
+            padding: 3px 10px;
             border-radius: 4px;
             font-size: 0.75rem;
-            font-weight: bold;
-            margin-right: 8px;
-            background: var(--c-paper-dark);
-            color: var(--c-ink-light);
+            font-weight: 500;
+            margin-right: 6px;
+            margin-bottom: 4px;
             letter-spacing: 0.05em;
-        }
-        .tag.reserved {
-            background: var(--c-vermilion);
             color: white;
         }
+        /* Tag Colors (Nippon Colors inspired) */
+        .tag.reserved { background-color: var(--c-vermilion); } /* Reservation */
+        .tag.dinner { background-color: #4D5D75; } /* Kachi-iro (Dark Blue) - Dinner/Lunch */
+        .tag.sweets { background-color: #EFA736; } /* Yamabuki (Golden Yellow) - Sweets */
+        .tag.bakery { background-color: #D98C6F; } /* Cinnamon - Bakery */
+        .tag.snack { background-color: var(--c-matcha); } /* Matcha - Snack/Takeout */
+        .tag.izakaya { background-color: #5D4037; } /* Kogecha (Dark Brown) - Izakaya/Meat */
 
         /* Weather Widget */
         .weather-badge {
@@ -381,12 +385,26 @@
                 { city: "福岡 Fukuoka", hotel: "Hilton福岡海鷹 (Day 3~4)", area: "百道濱", note: "全室海景，度假風情與大型飯店服務", map: "Hilton Fukuoka Sea Hawk" }
             ],
             food: [
-                { name: "元祖牛腸鍋樂天地", type: "博多晚餐", note: "2/19 21:15 已預約，暖冬靈魂料理", reserved: true, map: "元祖牛腸鍋 樂天地 博多站前店" },
-                { name: "燒肉上", type: "天神晚餐", note: "2/22 20:30 已預約，精選高品質燒肉", reserved: true, map: "Yakiniku Jo 2-2-8 Watanabe-dori" },
-                { name: "糸島牡蠣小屋", type: "季節限定", note: "冬季限定肥美牡蠣，岐志漁港直送", map: "岐志漁港 牡蠣小屋" },
-                { name: "柳川蒸籠鰻魚飯", type: "水鄉名物", note: "本吉屋/若松屋，軟糯香甜", map: "元祖本吉屋 本店 柳川" },
-                { name: "大地的烏龍麵", type: "福岡日常", note: "必點牛蒡天婦羅烏龍麵", map: "大地のうどん 博多駅ちかてん" },
-                { name: "勝烈亭", type: "熊本名店", note: "黑豚炸豬排，外酥內嫩", map: "勝烈亭 新市街本店" }
+                // 預約 / 重點
+                { name: "元祖牛腸鍋樂天地", type: "博多晚餐", note: "2/19 21:15 已預約，暖冬靈魂料理", reserved: true, tags: ["reserved", "dinner"], map: "元祖牛腸鍋 樂天地 博多站前店" },
+                { name: "燒肉上", type: "天神晚餐", note: "2/22 20:30 已預約，精選高品質燒肉", reserved: true, tags: ["reserved", "izakaya"], map: "Yakiniku Jo 2-2-8 Watanabe-dori" },
+                
+                // 正餐 / 鹹食
+                { name: "博多水炊鍋専門 橙", type: "博多", note: "米其林推薦，濃郁雞湯鍋", tags: ["dinner"], map: "博多水炊鍋専門 橙" },
+                { name: "元祖博多めんたい重", type: "西中洲", note: "明太子蓋飯名店，建議早起排隊", tags: ["dinner"], map: "元祖博多めんたい重" },
+                { name: "博多シーフードうお田", type: "博多", note: "豪華海鮮丼，明太子食べ放題", tags: ["dinner"], map: "博多シーフードうお田" },
+                { name: "柳川蒸籠鰻魚飯", type: "柳川", note: "本吉屋/若松屋，軟糯香甜", tags: ["dinner"], map: "元祖本吉屋 本店 柳川" },
+                { name: "勝烈亭", type: "熊本", note: "黑豚炸豬排，外酥內嫩", tags: ["dinner"], map: "勝烈亭 新市街本店" },
+                { name: "大地的烏龍麵", type: "博多", note: "巨大牛蒡天婦羅，博多必吃", tags: ["dinner"], map: "大地のうどん 博多駅ちかてん" },
+                { name: "雞皮長政 (かわ屋)", type: "博多", note: "博多名物雞皮串，適合作為宵夜", tags: ["izakaya"], map: "雞皮長政 博多" },
+
+                // 甜點 / 麵包 / 伴手禮
+                { name: "I'm donut? 福岡", type: "天神", note: "生甜甜圈排隊名店，口感濕潤", tags: ["sweets"], map: "I'm donut? 福岡" },
+                { name: "鈴懸 博多本店", type: "中洲川端", note: "精緻和菓子，草莓大福與鈴乃最中", tags: ["sweets"], map: "鈴懸 博多本店" },
+                { name: "LeClerc", type: "博多", note: "法式甜點，精緻蛋糕", tags: ["sweets"], map: "LeClerc Hakata" },
+                { name: "Bouquca Bakery", type: "福岡", note: "人氣麵包店，口感紮實", tags: ["bakery"], map: "Bouquca Bakery Fukuoka" },
+                { name: "努努雞", type: "博多站", note: "冷炸雞，最佳下酒菜與伴手禮", tags: ["snack"], map: "努努雞 博多マイング店" },
+                { name: "糸島牡蠣小屋", type: "糸島", note: "冬季限定肥美牡蠣", tags: ["snack"], map: "岐志漁港 牡蠣小屋" }
             ],
             itinerary: [
                 {
@@ -486,12 +504,26 @@
 
         function renderFood() {
             const list = document.getElementById('food-list');
-            list.innerHTML = data.food.map(item => `
+            // Sort reserved first
+            const sortedFood = [...data.food].sort((a, b) => (b.reserved ? 1 : 0) - (a.reserved ? 1 : 0));
+            
+            list.innerHTML = sortedFood.map(item => `
                 <div class="card" style="${item.reserved ? 'border-left: 5px solid var(--c-vermilion)' : ''}">
                     <div style="display:flex; justify-content:space-between; align-items:flex-start;">
                         <div>
-                            <span class="tag ${item.reserved ? 'reserved' : ''}">${item.type}</span>
-                            <h3 style="font-size:1.2rem; margin:8px 0;">${item.name}</h3>
+                            <div style="margin-bottom:6px;">
+                                ${item.tags ? item.tags.map(t => {
+                                    let label = t.toUpperCase();
+                                    if(t==='reserved') label = '已預約';
+                                    if(t==='dinner') label = '正餐';
+                                    if(t==='sweets') label = '甜點';
+                                    if(t==='bakery') label = '麵包';
+                                    if(t==='snack') label = '小吃/伴手禮';
+                                    if(t==='izakaya') label = '居酒屋/燒肉';
+                                    return `<span class="tag ${t}">${label}</span>`;
+                                }).join('') : ''}
+                            </div>
+                            <h3 style="font-size:1.2rem; margin:4px 0 8px;">${item.name}</h3>
                             <p style="font-size:0.9rem; color:var(--c-ink-light);">${item.note}</p>
                         </div>
                     </div>
