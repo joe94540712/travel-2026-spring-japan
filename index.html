@@ -149,6 +149,149 @@
             font-size: 1.1rem;
         }
 
+        /* Spots View Styles */
+        .spot-card {
+            background: white;
+            border-radius: var(--s-radius);
+            box-shadow: var(--s-shadow);
+            margin-bottom: 24px;
+            overflow: hidden;
+            transition: transform 0.2s;
+            cursor: pointer;
+        }
+        .spot-card:active {
+            transform: scale(0.98);
+        }
+        .spot-img-container {
+            width: 100%;
+            height: 180px;
+            background-color: var(--c-paper-dark);
+            position: relative;
+            overflow: hidden;
+        }
+        .spot-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.9;
+            transition: opacity 0.3s;
+        }
+        .spot-header {
+            padding: 20px;
+            padding-bottom: 10px;
+        }
+        .spot-title {
+            font-family: 'Shippori Mincho', serif;
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+            color: var(--c-brown);
+        }
+        .spot-subtitle {
+            font-size: 0.9rem;
+            color: var(--c-matcha);
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+        
+        /* Accordion Details */
+        .spot-details {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s cubic-bezier(0, 1, 0, 1); /* Ease-out like effect */
+            background-color: white;
+        }
+        .spot-details.open {
+            max-height: 2000px; /* Arbitrary large number */
+            transition: max-height 0.4s ease-in-out;
+        }
+        .spot-content {
+            padding: 0 20px 20px 20px;
+            font-size: 0.95rem;
+            color: var(--c-ink);
+            line-height: 1.8;
+            border-top: 1px dashed var(--c-paper-dark);
+            margin-top: 10px;
+            padding-top: 15px;
+        }
+        .spot-section-title {
+            font-weight: bold;
+            color: var(--c-brown);
+            margin-top: 15px;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+        }
+        .spot-section-title::before {
+            content: '';
+            display: inline-block;
+            width: 4px;
+            height: 14px;
+            background: var(--c-gold);
+            margin-right: 8px;
+            border-radius: 2px;
+        }
+        .spot-tips-box {
+            background-color: rgba(106, 127, 96, 0.1); /* Light Matcha */
+            border-left: 4px solid var(--c-matcha);
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 0 4px 4px 0;
+            font-size: 0.9rem;
+        }
+        .expand-hint {
+            text-align: center;
+            color: var(--c-ink-light);
+            font-size: 0.8rem;
+            padding-bottom: 15px;
+            opacity: 0.6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+
+        /* Adjust Nav Bar for 5 items */
+        .nav-bar {
+            position: fixed;
+            bottom: 25px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: calc(100% - 30px);
+            max-width: 580px;
+            height: 70px;
+            background: rgba(62, 56, 50, 0.96);
+            backdrop-filter: blur(15px);
+            border-radius: 35px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+            z-index: 1000;
+            padding: 0 5px;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: rgba(255,255,255,0.4);
+            font-size: 0.65rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            transition: color 0.3s ease;
+            width: 19%;
+        }
+        .nav-item.active {
+            color: #E6E2D8;
+        }
+        .nav-item svg {
+            width: 22px;
+            height: 22px;
+            margin-bottom: 4px;
+        }
+
         /* Weather Widget */
         .weather-badge {
             position: absolute;
@@ -198,45 +341,6 @@
             width: 18px;
             height: 18px;
             margin-right: 8px;
-        }
-
-        /* Navigation */
-        .nav-bar {
-            position: fixed;
-            bottom: 25px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: calc(100% - 40px);
-            max-width: 500px;
-            height: 70px;
-            background: rgba(62, 56, 50, 0.96);
-            backdrop-filter: blur(15px);
-            border-radius: 35px;
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.4);
-            z-index: 1000;
-        }
-
-        .nav-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            color: rgba(255,255,255,0.4);
-            font-size: 0.75rem;
-            background: none;
-            border: none;
-            cursor: pointer;
-            transition: color 0.3s ease;
-        }
-        .nav-item.active {
-            color: #E6E2D8;
-        }
-        .nav-item svg {
-            width: 26px;
-            height: 26px;
-            margin-bottom: 4px;
         }
 
         /* Flights */
@@ -355,6 +459,13 @@
             <div id="itinerary-list"></div>
         </div>
 
+        <!-- View: Spots -->
+        <div id="view-spots" class="view hidden">
+            <h1 class="title-kanji">景點導覽</h1>
+            <p class="intro-text">深入探索九州的自然與文化亮點。</p>
+            <div id="spot-list"></div>
+        </div>
+
         <!-- View: Food -->
         <div id="view-food" class="view hidden">
             <h1 class="title-kanji">美食資訊</h1>
@@ -381,6 +492,10 @@
         <button class="nav-item active" onclick="switchTab('itinerary')">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
             <span>行程</span>
+        </button>
+        <button class="nav-item" onclick="switchTab('spots')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            <span>景點</span>
         </button>
         <button class="nav-item" onclick="switchTab('food')">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
@@ -420,7 +535,7 @@
                 { name: "LeClerc", type: "博多", region: "Hakata", note: "法式甜點，精緻蛋糕", tags: ["sweets"], map: "LeClerc Hakata" },
                 { name: "努努雞", type: "博多站", region: "Hakata", note: "冷炸雞，最佳下酒菜與伴手禮", tags: ["snack"], map: "努努雞 博多マイング店" },
                 { name: "かわ屋 祇園店", type: "祇園", region: "Hakata", note: "福岡雞皮名店，口感酥脆", tags: ["izakaya"], map: "かわ屋 祇園店" },
-                { name: "FUK Coffee", type: "祇園/博多", region: "Hakata", note: "航空主題咖啡廳，適合打卡", tags: ["sweets"], map: "FUK COFFEE" },
+                { name: "FUK Coffee", type: "祇園/博多", region: "Hakata", note: "航空主題咖啡廳，適合打卡", tags: ["sweets"], map: "FUK COFFEE Parks" },
 
                 // 天神/中洲 (Tenjin/Nakasu)
                 { name: "元祖博多めんたい重", type: "西中洲", region: "Tenjin", note: "明太子蓋飯名店，建議早起排隊", tags: ["set"], map: "元祖博多めんたい重" },
@@ -499,6 +614,62 @@
                         { time: "16:30", text: "還車並抵達機場 (JX841)", map: "福岡機場國際線航廈" }
                     ]
                 }
+            ],
+            spots: [
+                {
+                    id: "ukiha-inari",
+                    name: "浮羽稻荷神社",
+                    subtitle: "通往天空的紅色階梯，絕美的拍照聖地",
+                    img: "https://www.hokkaidolibrary.com/img/attractions_pic/v9eIipI92bRkGXJWdvqQjRzmlp7rVblktSfMyeoD__1606_1070.jpg",
+                    bg: "這裡建於1957年，供奉從京都伏見稻荷大社分靈的神明。雖歷史不長，但因絕美景色成為IG熱門景點。",
+                    mustSee: "沿著陡峭山坡整齊排列的91座朱紅色鳥居。穿過鳥居隧道回頭一望，能俯瞰壯闊的筑後平原。",
+                    tips: "這裡被稱為「天空神社」，春天櫻花盛開時景色如夢似幻。主要保佑商業繁榮、五穀豐收與學業有成。"
+                },
+                {
+                    id: "ukiha-shirakabe",
+                    name: "浮羽白壁街道",
+                    subtitle: "漫步江戶時代，防災智慧下的白色老街",
+                    img: "https://placehold.co/600x360/F2EFE9/5D4037/png?text=Shirakabe+Street",
+                    bg: "江戶時代連結久留米與日田的宿場町。明治初期大火後，富商為防火改用「土藏造」樣式重建，形成今日的白壁建築群。",
+                    mustSee: "保留明治時代風貌的傳統建築，以及由古民家改建的咖啡廳與雜貨鋪，如「居藏之館」。",
+                    tips: "漫步時請抬頭欣賞白牆上的精緻裝飾（鏝繪），那是昔日富商彰顯財力的象徵。"
+                },
+                {
+                    id: "yame-tea",
+                    name: "八女中央大茶園",
+                    subtitle: "一望無際的綠色地毯，600年的茶香傳承",
+                    img: "https://placehold.co/600x360/6A7F60/FFFFFF/png?text=Yame+Tea+Garden",
+                    bg: "八女茶歷史可追溯至600多年前。這片大茶園是1970年代開墾而成的縣營示範茶園，廣達70公頃。",
+                    mustSee: "360度無死角的緩坡丘陵，整齊排列的茶樹如同巨大的綠色地毯。天氣好時可遠眺有明海。",
+                    tips: "注意茶園裡像電線桿的風扇，那是「防霜扇」，用來防止日夜溫差大導致茶葉結霜，是生產高級玉露的秘密。"
+                },
+                {
+                    id: "kumamoto-castle",
+                    name: "熊本城 (特別通路)",
+                    subtitle: "見證復興的空中迴廊，難攻不落的名城",
+                    img: "https://placehold.co/600x360/3E3832/FFFFFF/png?text=Kumamoto+Castle",
+                    bg: "日本三大名城之一，加藤清正建造。2016年地震受損嚴重，目前透過特別見學通路開放參觀修復過程。",
+                    mustSee: "期間限定的「空中迴廊」，可近距離觀看石牆修復工程與宏偉的天守閣。還有著名的「武者返」石牆。",
+                    tips: "空中迴廊預計開放至2038年，這是只有現在才能看到的珍貴景象，見證歷史的修復過程。"
+                },
+                {
+                    id: "josaien",
+                    name: "櫻之馬場 城彩苑",
+                    subtitle: "穿越江戶城下町，美食與歷史的體驗園區",
+                    img: "https://placehold.co/600x360/CD4E3D/FFFFFF/png?text=Josaien",
+                    bg: "位於熊本城山腳下的觀光設施，重現了17世紀江戶時代城下町的繁榮風貌。",
+                    mustSee: "「湧湧座」歷史體驗館與聚集23家特色店鋪的「櫻花小路」。",
+                    tips: "必吃熊本三大名產：生馬肉刺身、芥末蓮藕、即時糰子（Ikinari Dango）。"
+                },
+                {
+                    id: "dazaifu",
+                    name: "太宰府天滿宮",
+                    subtitle: "學問之神的總本宮，飛梅傳說的舞台",
+                    img: "https://placehold.co/600x360/BFA456/FFFFFF/png?text=Dazaifu+Tenmangu",
+                    bg: "供奉學問之神菅原道真，已有1100年歷史。目前本殿進行大整修，可參觀由藤本壯介設計的「臨時本殿」。",
+                    mustSee: "本殿旁的「飛梅」，傳說因思念主人一夜從京都飛來。還有屋頂種滿植物的臨時本殿。",
+                    tips: "參道上必吃現烤「梅枝餅」。別忘了摸摸「御神牛」銅像的頭，祈求長智慧。"
+                }
             ]
         };
 
@@ -572,12 +743,7 @@
                 list.appendChild(reservedSection);
             }
 
-            // 2. Group by Region (Excluding reserved ones to avoid duplicates? Or keep them? User said "Top", let's separate them completely)
-            // Strategy: Show Reserved ONCE at top. Then show others grouped by region.
-            // If a reserved item is also in region list, it might be redundant. 
-            // Better to show ALL items in region list, but Reserved ones are ALSO highlighted at top?
-            // "預約的項目仍然需要置頂標示" usually means "Group them at top".
-            // Let's filter out reserved items from the region groups to avoid duplicate display.
+            // 2. Group by Region (Excluding reserved ones)
             const otherItems = data.food.filter(i => !i.reserved);
 
             const regions = {
@@ -644,12 +810,68 @@
             `).join('');
         }
 
+        function renderSpots() {
+            const list = document.getElementById('spot-list');
+            list.innerHTML = data.spots.map(spot => `
+                <div class="spot-card" onclick="toggleSpot('${spot.id}')">
+                    <div class="spot-img-container">
+                        <img src="${spot.img}" alt="${spot.name}" class="spot-img">
+                    </div>
+                    <div class="spot-header">
+                        <div class="spot-title">${spot.name}</div>
+                        <div class="spot-subtitle">${spot.subtitle}</div>
+                        
+                        <div class="expand-hint" id="hint-${spot.id}">
+                             <span>▼ 點擊展開詳情</span>
+                        </div>
+
+                        <div class="spot-details" id="details-${spot.id}">
+                            <div class="spot-content">
+                                <div class="spot-section-title">背景與特色</div>
+                                <p>${spot.bg}</p>
+
+                                <div class="spot-section-title">必看亮點</div>
+                                <p>${spot.mustSee}</p>
+
+                                <div class="spot-tips-box">
+                                    <div style="font-weight:bold; margin-bottom:5px; color:var(--c-matcha);">💡 導遊小撇步</div>
+                                    ${spot.tips}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function toggleSpot(id) {
+            const details = document.getElementById(`details-${id}`);
+            const hint = document.getElementById(`hint-${id}`);
+            const isOpen = details.classList.contains('open');
+
+            // Close all others (optional, but cleaner)
+            // document.querySelectorAll('.spot-details').forEach(el => el.classList.remove('open'));
+            // document.querySelectorAll('.expand-hint').forEach(el => el.style.opacity = '0.6');
+
+            if (isOpen) {
+                details.classList.remove('open');
+                hint.innerHTML = '<span>▼ 點擊展開詳情</span>';
+            } else {
+                details.classList.add('open');
+                hint.innerHTML = '<span>▲ 收起詳情</span>';
+            }
+        }
+
         function switchTab(tabId) {
             document.querySelectorAll('.view').forEach(v => v.classList.add('hidden'));
             document.getElementById(`view-${tabId}`).classList.remove('hidden');
+            
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-            const idx = {itinerary:0, food:1, stay:2, flights:3}[tabId];
-            document.querySelectorAll('.nav-item')[idx].classList.add('active');
+            // Index mapping: 0=Itinerary, 1=Spots, 2=Food, 3=Stay, 4=Flights
+            const idx = {itinerary:0, spots:1, food:2, stay:3, flights:4}[tabId];
+            if(idx !== undefined) {
+                document.querySelectorAll('.nav-item')[idx].classList.add('active');
+            }
             window.scrollTo(0,0);
         }
 
@@ -658,6 +880,7 @@
             renderFood();
             renderStay();
             renderFlights();
+            renderSpots();
             setTimeout(() => {
                 document.getElementById('loader').style.display = 'none';
             }, 1000);
