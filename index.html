@@ -677,9 +677,9 @@
 
         function renderItinerary() {
             const list = document.getElementById('itinerary-list');
-            list.innerHTML = data.itinerary.map(day => `
+            list.innerHTML = data.itinerary.map((day, index) => `
                 <div class="card">
-                    <div class="weather-badge">
+                    <div class="weather-badge" id="weather-badge-${index}">
                         <div class="weather-icon">${day.weather.icon}</div>
                         <div class="weather-temp">${day.weather.temp} ${day.weather.desc}</div>
                         <div class="weather-loc">${day.loc}</div>
@@ -886,12 +886,91 @@
             window.scrollTo(0,0);
         }
 
+        // --- Open-Meteo Weather Integration ---
+        
+        // 1. Coordinate Mapping & Dates
+        const weatherConfig = [
+            { date: "2026-02-19", lat: 33.5902, lon: 130.4207 }, // Day 1: Hakata
+            { date: "2026-02-20", lat: 33.3283, lon: 130.7672 }, // Day 2: Ukiha
+            { date: "2026-02-21", lat: 32.8062, lon: 130.7058 }, // Day 3: Kumamoto
+            { date: "2026-02-22", lat: 33.5215, lon: 130.5349 }, // Day 4: Dazaifu
+            { date: "2026-02-23", lat: 33.5875, lon: 130.3761 }  // Day 5: Fukuoka
+        ];
+
+        // 2. Helper: WMO Code to Emoji
+        function getWeatherEmoji(code) {
+            if (code <= 1) return '☀️'; // Clear
+            if (code === 2) return '⛅'; // Partly cloudy
+            if (code === 3) return '☁️'; // Overcast
+            if (code === 45 || code === 48) return '🌫️'; // Fog
+            if (code >= 51 && code <= 67) return '🌧️'; // Drizzle/Rain
+            if (code >= 80 && code <= 82) return '🌧️'; // Showers
+            if (code >= 71 && code <= 77) return '❄️'; // Snow
+            if (code >= 85 && code <= 86) return '❄️'; // Snow showers
+            if (code >= 95) return '⛈️'; // Thunderstorm
+            return '❓';
+        }
+
+        // 3. Helper: WMO Code to Description (Traditional Chinese)
+        function getWeatherDesc(code) {
+            const map = {
+                0: "晴朗", 1: "晴朗", 2: "多雲時晴", 3: "陰天",
+                45: "霧", 48: "霧",
+                51: "毛毛雨", 53: "毛毛雨", 55: "毛毛雨",
+                61: "小雨", 63: "中雨", 65: "大雨",
+                66: "凍雨", 67: "凍雨",
+                71: "小雪", 73: "中雪", 75: "大雪",
+                77: "雪粒",
+                80: "陣雨", 81: "陣雨", 82: "強陣雨",
+                85: "陣雪", 86: "陣雪",
+                95: "雷雨", 96: "雷雨雹", 99: "雷雨雹"
+            };
+            return map[code] || "未知";
+        }
+
+        // 4. Main Fetch Function
+        async function fetchWeather() {
+            try {
+                // Construct Promises
+                const promises = weatherConfig.map(cfg => {
+                    const url = `https://api.open-meteo.com/v1/forecast?latitude=${cfg.lat}&longitude=${cfg.lon}&daily=weather_code,temperature_2m_max,temperature_2m_min&timezone=Asia%2FTokyo&start_date=${cfg.date}&end_date=${cfg.date}`;
+                    return fetch(url).then(res => res.json());
+                });
+
+                // Wait for all
+                const results = await Promise.all(promises);
+
+                // Update DOM
+                results.forEach((data, index) => {
+                    if (!data.daily || !data.daily.weather_code) return;
+
+                    const code = data.daily.weather_code[0];
+                    const maxT = Math.round(data.daily.temperature_2m_max[0]);
+                    const minT = Math.round(data.daily.temperature_2m_min[0]);
+                    
+                    const tempStr = `${minT}~${maxT}°C`;
+                    const emoji = getWeatherEmoji(code);
+                    const desc = getWeatherDesc(code);
+
+                    const badge = document.getElementById(`weather-badge-${index}`);
+                    if (badge) {
+                        badge.querySelector('.weather-icon').textContent = emoji;
+                        badge.querySelector('.weather-temp').textContent = `${tempStr} ${desc}`;
+                    }
+                });
+                console.log("Weather updated from Open-Meteo");
+            } catch (e) {
+                console.warn("Weather fetch failed, using static fallback.", e);
+            }
+        }
+
         window.onload = () => {
             renderItinerary();
             renderFood();
             renderStay();
             renderFlights();
             renderSpots();
+            fetchWeather(); // Fire and forget
             setTimeout(() => {
                 document.getElementById('loader').style.display = 'none';
             }, 1000);
